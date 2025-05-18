@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Webhook Trigger</title>
+</head>
+<body>
+    <h1>Trigger MacroDroid</h1>
+    <button onclick="triggerWebhook()">Trigger Webhook</button>
+
+    <script>
+        function getUrlParameter(name) {
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get(name);
+        }
+
+        function triggerWebhook() {
+            const webhookUrl = getUrlParameter('url');
+            if (webhookUrl) {
+                fetch(webhookUrl, { method: 'POST' })
+                    .then(response => alert('Webhook sent!'))
+                    .catch(error => alert('Error: ' + error));
+            } else {
+                alert('No webhook URL provided.');
+            }
+        }
+    </script>
+</body>
+</html>
