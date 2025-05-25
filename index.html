@@ -1,27 +1,31 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Webhook Trigger</title>
+    <title>Send Popup to Phone</title>
 </head>
 <body>
-    <h1>Trigger MacroDroid</h1>
-    <button onclick="triggerWebhook()">Trigger Webhook</button>
+    <h1>Send Popup Message to Phone</h1>
+
+    <input type="text" id="popupInput" placeholder="Enter your message" style="width: 80%;" />
+    <button onclick="sendPopup()">Send</button>
 
     <script>
-        function getUrlParameter(name) {
-            const urlParams = new URLSearchParams(window.location.search);
-            return urlParams.get(name);
-        }
+        const webhookUrl = "https://trigger.macrodroid.com/e18fef89-6f42-492f-bd68-ca7e7f4f9d63/colo";
 
-        function triggerWebhook() {
-            const webhookUrl = getUrlParameter('url');
-            if (webhookUrl) {
-                fetch(webhookUrl, { method: 'POST' })
-                    .then(response => alert('Webhook sent!'))
-                    .catch(error => alert('Error: ' + error));
-            } else {
-                alert('No webhook URL provided.');
+        function sendPopup() {
+            const text = document.getElementById("popupInput").value;
+            if (!text) {
+                alert("Please enter a message.");
+                return;
             }
+
+            fetch(webhookUrl, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ popupText: text })
+            })
+            .then(() => alert("Message sent!"))
+            .catch(err => alert("Error: " + err));
         }
     </script>
 </body>
