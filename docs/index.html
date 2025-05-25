@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>MacroDroid Popup Sender</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      padding: 20px;
+      text-align: center;
+    }
+    input, button {
+      padding: 10px;
+      font-size: 16px;
+      margin: 10px;
+      width: 80%;
+    }
+  </style>
+</head>
+<body>
+  <h2>Send Popup Message</h2>
+  <p>This sends a popup to your MacroDroid using your webhook link.</p>
+
+  <input type="text" id="popupText" placeholder="Type popup message..." />
+  <br>
+  <button onclick="sendPopup()">Send</button>
+
+  <script>
+    const params = new URLSearchParams(window.location.search);
+    const webhook = params.get("webhook");
+
+    function sendPopup() {
+      const msg = document.getElementById("popupText").value;
+      if (!webhook) {
+        alert("No webhook provided in URL.");
+        return;
+      }
+      if (!msg) {
+        alert("Please enter a message.");
+        return;
+      }
+
+      fetch(webhook, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ popupText: msg })
+      })
+      .then(() => alert("Popup sent!"))
+      .catch(err => alert("Error: " + err));
+    }
+  </script>
+</body>
+</html>
